@@ -340,11 +340,11 @@ SymPtr pass1(int argc, char *argv[]) {
             pc += strtoul(line.operand1, NULL, 16);
           }
           if (line.code != OP_END && line.code != OP_BASE) {
-            printf("%06x ", pc);
+            // printf("%06x ", pc);
           } else {
-            printf("       ");
+            // printf("       ");
           }
-          printf("%12s ", line.symbol);
+          // printf("%12s ", line.symbol);
           if (strcmp("\0", line.symbol) != 0) {
             sptr = insert(sptr, line.symbol, pc);
           }
@@ -352,30 +352,30 @@ SymPtr pass1(int argc, char *argv[]) {
             char str[] = "";
             strcat(str, "+");
             strcat(str, line.op);
-            printf("%12s ", str);
+            // printf("%12s ", str);
           } else {
-            printf("%12s ", line.op);
+            // printf("%12s ", line.op);
           }
           if ((line.addressing & ADDR_IMMEDIATE) == ADDR_IMMEDIATE) {
             char str[] = "";
             strcat(str, "#");
             strcat(str, line.operand1);
-            printf("%12s", str);
+            // printf("%12s", str);
           } else if ((line.addressing & ADDR_INDIRECT) == ADDR_INDIRECT) {
             char str[] = "";
             strcat(str, "@");
             strcat(str, line.operand1);
-            printf("%12s", str);
+            // printf("%12s", str);
           } else {
-            printf("%12s", line.operand1);
+            // printf("%12s", line.operand1);
           }
           if (((line.addressing & ADDR_INDEX) == ADDR_INDEX) ||
               line.fmt == FMT2) {
-            printf(",%12s", line.operand2);
+            // printf(",%12s", line.operand2);
           }
-          printf("\n");
+          // printf("\n");
           switch (line.code) {
-            case 0x101:
+            case OP_BYTE:
               line.fmt = FMT1;
               if((line.operand1[0] == 'C') && (line.operand1[1] = '\'')){
                 line.fmt = FMT1 * (strlen(line.operand1) - 3);
@@ -383,13 +383,13 @@ SymPtr pass1(int argc, char *argv[]) {
                 line.fmt = FMT1 * (strlen(line.operand1) - 3) / 2;
               }
               break;
-            case 0x103:
+            case OP_RESB:
               line.fmt = FMT1 * atoi(line.operand1);
               break;
-            case 0x102:
+            case OP_WORD:
               line.fmt = FMT3;
               break;
-            case 0x104:
+            case OP_RESW:
               line.fmt = FMT3 * atoi(line.operand1);
               break;
             default:
